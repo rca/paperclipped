@@ -157,7 +157,7 @@ module AssetTags
     If the 'ignore_case' attribute is set to false, the match is case sensitive. By default, 'ignore_case' is set to true.
 
     *Usage:* 
-    <pre><code><r:assets:each:if_content_type matches="regexp" [ignore_case=true|false"]>...</r:assets:each:if_content_type></code></pre>
+    <pre><code><r:assets:each:if_content_type matches="regexp" [ignore_case="true|false"]>...</r:assets:each:if_content_type></code></pre>
   }
   tag 'assets:if_content_type' do |tag|
     options = tag.attr.dup
