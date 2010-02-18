@@ -211,6 +211,21 @@ module AssetTags
       raise TagError, "Asset is not an image"
     end
   end
+
+  desc %{
+    Returns the path to the requested asset
+
+    *Usage:*
+    <pre><code><r:assets:path [title="asset_title"] [size="icon|thumbnail"]></code></pre>
+  }
+  tag 'assets:path' do |tag|
+    options = tag.attr.dup
+    asset = find_asset(tag, options)
+    size = options['size'] ? options.delete('size') : 'original'
+    url = asset.thumbnail(size)
+    %{#{url}} rescue nil
+  end
+
   desc %{
     Embeds a flash-movie in a cross-browser-compatible fashion using only HTML
     
