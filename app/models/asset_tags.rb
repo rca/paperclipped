@@ -18,7 +18,7 @@ module AssetTags
   desc %{
     Cycles through all assets attached to the current page.  
     This tag does not require the title atttribute, nor do any of its children.
-    Use the `limit' and `offset` attribute to render a specific number of assets.
+    Use the `limit` and `offset` attribute to render a specific number of assets.
     Use `by` and `order` attributes to control the order of assets.
     Use `extensions` attribute to specify which assets to be rendered.
     
@@ -167,10 +167,10 @@ module AssetTags
     asset_content_type = tag.locals.asset.asset_content_type
     tag.expand unless asset_content_type.match(regexp).nil?
   end
-  
+
   [:title, :caption, :asset_file_name, :asset_content_type, :asset_file_size, :id].each do |method|
     desc %{
-      Renders the `#{method.to_s}' attribute of the asset.     
+      Renders the `#{method.to_s}` attribute of the asset.     
       The 'title' attribute is required on this tag or the parent tag.
     }
     tag "assets:#{method.to_s}" do |tag|
