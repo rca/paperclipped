@@ -41,6 +41,9 @@ namespace :radiant do
         Asset.find(:all).each do |asset|
           puts "Exporting #{asset.asset_file_name}"
           cp asset.asset.path, File.join(asset_path, asset.asset_file_name)
+
+          yaml_path = "#{asset.asset_file_name}.yaml"
+          File.open(File.join(asset_path, yaml_path), 'w') {|f| f.write(asset.attributes.to_yaml) }
         end
         puts "Done."
       end
@@ -50,10 +53,20 @@ namespace :radiant do
         asset_path = File.join(RAILS_ROOT, "assets")
         if File.exist?(asset_path) && File.stat(asset_path).directory?
           Dir.glob("#{asset_path}/*").each do |file_with_path|
+            next if file_with_path.ends_with?('.yaml')
+
             if File.stat(file_with_path).file?
               new_asset = File.new(file_with_path) 
               puts "Creating #{File.basename(file_with_path)}"
-              Asset.create :asset => new_asset
+              asset = Asset.create :asset => new_asset
+
+              yaml_path = "#{file_with_path}.yaml"
+              if File.exist?(yaml_path)
+                puts "  Getting attributes from #{File.basename(yaml_path)}"
+                attrs = YAML.load_file(yaml_path)
+                asset.attributes = attrs
+                asset.save
+              end
             end
           end
         end
