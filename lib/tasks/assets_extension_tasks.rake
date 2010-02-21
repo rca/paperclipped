@@ -25,6 +25,15 @@ namespace :radiant do
         
       end
       
+      desc "Destroys all assets in the database"
+      task :destroy => :environment do
+        Asset.find(:all).each do |asset|
+          puts "Destroying #{asset.asset_file_name}"
+          asset.destroy
+        end
+        puts "Done."
+      end
+
       desc "Exports assets from database to assets directory"
       task :export => :environment do
         asset_path = File.join(RAILS_ROOT, "assets")
