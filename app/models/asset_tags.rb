@@ -206,7 +206,7 @@ module AssetTags
       attributes = options.inject('') { |s, (k, v)| s << %{#{k.downcase}="#{v}" } }.strip
       attributes << alt unless alt.nil?
       url = asset.thumbnail(size)
-      %{<img src="#{url}" #{attributes unless attributes.empty?} />} rescue nil
+      %{<img src="#{url}?#{asset.updated_at.to_i}" #{attributes unless attributes.empty?} />} rescue nil
     else
       raise TagError, "Asset is not an image"
     end
@@ -223,7 +223,7 @@ module AssetTags
     asset = find_asset(tag, options)
     size = options['size'] ? options.delete('size') : 'original'
     url = asset.thumbnail(size)
-    %{#{url}} rescue nil
+    %{#{url}?#{asset.updated_at.to_i}} rescue nil
   end
 
   desc %{
@@ -354,7 +354,7 @@ module AssetTags
 
       a
     end
-    
+
     def assets_find_options(tag)
       attr = tag.attr.symbolize_keys
       extensions = attr[:extensions] && attr[:extensions].split('|') || []
